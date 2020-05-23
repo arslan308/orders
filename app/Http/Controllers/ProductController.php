@@ -22,7 +22,7 @@ class ProductController extends Controller
 
     public function get(){
         $shop = Shop::all();
-        $api_key = "5131078ede81c8d9cef78fb31c47851b";
+        $api_key = "ae103121504821129123616e2e21516d";
         $shared_secret = $shop[0]->access_token;
 
         $shopifyClient = new ShopifyClient([

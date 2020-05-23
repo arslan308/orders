@@ -20,10 +20,10 @@ class ShopifyController extends Controller
 {
         public function index(Request $request){
     
-            $apiKey         = '5131078ede81c8d9cef78fb31c47851b';
+            $apiKey         = 'ae103121504821129123616e2e21516d';
             $shopDomain     = $request->input('shop'); 
             $scopes         = ['write_orders', 'write_products', 'write_themes', 'write_script_tags', 'write_content'];
-            $redirectionUri = 'http://orders.com/authenticate'; 
+            $redirectionUri = 'https://ars.taajmart.com/authenticate'; 
             $nonce          = 'strong_nonce';
 
             $response = new AuthorizationRedirectResponse($apiKey, $shopDomain, $scopes, $redirectionUri, $nonce);
@@ -40,8 +40,8 @@ class ShopifyController extends Controller
             }
             else{
             // Set variables for our request
-            $api_key = "5131078ede81c8d9cef78fb31c47851b";
-            $shared_secret = "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";
+            $api_key = "ae103121504821129123616e2e21516d";
+            $shared_secret = "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";
             $params = $_GET; // Retrieve all request parameters
             $hmac = $_GET['hmac']; // Retrieve HMAC request parameter
             $params = array_diff_key($params, array('hmac' => '')); // Remove hmac from params
@@ -61,16 +61,16 @@ class ShopifyController extends Controller
             $shopifyClient = new ShopifyClient([
                 'private_app'   => true,
                 'api_key'       => $api_key,
-                'access_token'  => $accessToken,
+                'password'  => $accessToken,
                 'shop'          => $shopDomain,
-                'version'       => '2019-04'
+                'version'       => '2020-04'
             ]);
             $shopDomain2 = $shopifyClient->getShop();
             $newuser = User::create([
                 'name' => $shopDomain2['name'],
                 'email' => $shopDomain2['email'],
                 'is_admin' => true,
-                'password' => Hash::make('password'),
+                'password' => Hash::make('password123'), 
             ]);
             $mainshop = Shop::create([
                 'user_id' => $newuser['id'],
