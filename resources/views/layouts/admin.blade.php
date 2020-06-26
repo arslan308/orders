@@ -3,16 +3,20 @@
 <head>
   <meta charset="utf-8">  
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <title>Admin Dashboard</title>
-<!-- CSRF Token -->
+  <link rel="shortcut icon" href="{{ asset('dist/img/ezgif.com-webp-to-jpg.jpg') }}"> 
+  {{-- <title>Admin Dashboard</title> --}}
+  <!-- CSRF Token -->
 <meta name="csrf-token" content="{{ csrf_token() }}" id="_token">
-<title>{{ config('app.name', 'Laravel') }}</title>
+<title>Fan Arch Partners</title>    
 
 {{-- data-tables --}}
 <link  rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.21/css/dataTables.bootstrap4.min.css">
-<link  rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.1.3/css/bootstrap.css">
-<link  rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.12/css/select2.min.css">
+{{-- <link  rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.21/css/jquery.dataTables.min.css"> --}}
+<link  rel="stylesheet" type="text/css" href="https://cdn.datatables.net/buttons/1.6.2/css/buttons.dataTables.min.css">
 
+<link  rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.1.3/css/bootstrap.css">
+{{-- <link  rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.12/css/select2.min.css"> --}}
+ 
 
 <!-- Scripts -->
 <script src="{{ asset('js/app.js') }}" defer></script>
@@ -81,10 +85,10 @@
   <!-- Main Sidebar Container -->
   <aside class="main-sidebar sidebar-dark-primary elevation-4">
     <!-- Brand Logo -->
-    <a href="index3.html" class="brand-link">
-      <img src="{{ asset('dist/img/AdminLTELogo.png') }}" alt="AdminLTE Logo" class="brand-image img-circle elevation-3"
-           style="opacity: .8">
-      <span class="brand-text font-weight-light">Admin</span>
+    <a href="/admin/home" class="brand-link"> 
+      <img src="{{ asset('dist/img/ezgif.com-webp-to-jpg.jpg') }}" alt="AdminLTE Logo" class="brand-image elevation-3"
+           style="opacity: .8;border-radius:8px;"> 
+      <span class="brand-text font-weight-light">Fanarch Partners</span>
     </a>
 
     <!-- Sidebar -->
@@ -92,7 +96,11 @@
       <!-- Sidebar user panel (optional) -->
       <div class="user-panel mt-3 pb-3 mb-3 d-flex">
         <div class="image">
-          <img src="{{ asset('dist/img/user2-160x160.jpg') }}" class="img-circle elevation-2" alt="User Image">
+          @if(Auth::user()->image !==null)
+          <img src="{{ asset('/public/images/'.Auth::user()->image) }}" style=" width: 50px; height: 36px; border-radius: 2px; " alt="User Image">
+          @else
+          <img src="{{ asset('dist/img/admin.png') }}" class="img-circle elevation-2" alt="User Image">
+          @endif
         </div>
         <div class="info">
           <a href="#" class="d-block">{{ Auth::user()->name }}</a>
@@ -106,13 +114,47 @@
                with font-awesome or any other icon font library -->
 
           <li class="nav-item">
-            <a href="orders" class="nav-link">
+            <a href="/admin/orders" class="nav-link">  
               <i class="nav-icon fas fa-chart-pie"></i>
               <p>
                 Orders
               </p>
             </a>
           </li>
+          @if(Auth::user()->is_admin == 1)
+          <li class="nav-item">
+            <a href="/admin/register" class="nav-link">
+              <i class="nav-icon fas fa-chart-pie"></i>
+              <p>
+                Register
+              </p>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a href="/admin/vendors" class="nav-link">  
+              <i class="nav-icon fas fa-chart-pie"></i> 
+              <p>
+                Clients
+              </p>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a href="/admin/profit" class="nav-link">    
+              <i class="nav-icon fas fa-chart-pie"></i> 
+              <p>
+                Profit
+              </p>
+            </a>
+          </li>
+          @endif
+          {{-- <li class="nav-item">
+            <a href="/chatify" class="nav-link">  
+              <i class="nav-icon fas fa-chart-pie"></i> 
+              <p>
+                Chat
+              </p>
+            </a>
+          </li> --}}
         </ul>
       </nav>
       <!-- /.sidebar-menu -->
@@ -122,11 +164,17 @@
 
   <!-- Content Wrapper. Contains page content -->
   <div class="content-wrapper">
+    @if (session('status'))
+    <div class="alert alert-success">
+        {{ session('status') }}
+    </div>
+@endif 
+
      @yield('content')
   </div>
   <!-- /.content-wrapper -->
   <footer class="main-footer">
-    <strong>Copyright &copy; 2014-2020 <a href="#">Arslan</a>.</strong>
+    <strong>Copyright &copy; 2014-2020 <a href="#">Fanarch</a>.</strong>
     All rights reserved.
     <div class="float-right d-none d-sm-inline-block">
       <b>Version</b> 1.0.0
@@ -142,20 +190,28 @@
 <!-- ./wrapper -->
 
 
-<script
-  src="https://code.jquery.com/jquery-3.5.0.min.js"
-  integrity="sha256-xNzN2a4ltkB44Mc/Jz3pT4iU1cmeR0FkXs4pru/JxaQ="
-  crossorigin="anonymous"></script>
+<script src="https://code.jquery.com/jquery-3.5.1.js" type="text/javascript"></script>
+
   {{-- data-tables --}}
 <script src="https://cdn.datatables.net/1.10.21/js/jquery.dataTables.min.js" defer="defer"></script>
 <script src="https://cdn.datatables.net/1.10.21/js/dataTables.bootstrap4.min.js" defer="defer"></script>
 
+
+<script src="https://cdn.datatables.net/buttons/1.6.2/js/dataTables.buttons.min.js" defer="defer"></script>
+<script src="https://cdn.datatables.net/buttons/1.6.2/js/buttons.flash.min.js" defer="defer"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js" defer="defer"> </script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/pdfmake.min.js" defer="defer"> </script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/vfs_fonts.js" defer="defer"></script>
+<script src="https://cdn.datatables.net/buttons/1.6.2/js/buttons.html5.min.js" defer="defer"></script>
+<script src="https://cdn.datatables.net/buttons/1.6.2/js/buttons.print.min.js" defer="defer"></script>
+
 <!-- jQuery UI 1.11.4 -->
 <script src="{{ asset('plugins/jquery-ui/jquery-ui.min.js') }}"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.12/js/select2.min.js"  type="text/javascript"></script>
+{{-- <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.12/js/select2.min.js"  type="text/javascript"></script>
 <script src="{{ asset('js/tinymce/tinymce.min.js') }}" type="text/javascript"></script>
-<script src="https://unpkg.com/izitoast/dist/js/iziToast.min.js"></script>
+<script src="https://unpkg.com/izitoast/dist/js/iziToast.min.js"></script> --}}
 <script src="{{ asset('js/custom.js') }}"></script>
+
 
 
 
@@ -164,20 +220,26 @@
   $.widget.bridge('uibutton', $.ui.button)
 </script>
 <!-- Bootstrap 4 -->
-<script src="{{ asset('plugins/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
+{{-- <script src="{{ asset('plugins/bootstrap/js/bootstrap.bundle.min.js') }}"></script> --}}
 <!-- Sparkline -->
 {{-- <script src="{{ asset('plugins/sparklines/sparkline.js') }}"></script> --}}
 <!-- daterangepicker -->
-<script src="{{ asset('plugins/moment/moment.min.js') }}"></script>
-<script src="{{ asset('plugins/daterangepicker/daterangepicker.js') }}"></script>
+{{-- <script src="{{ asset('plugins/moment/moment.min.js') }}"></script>
+<script src="{{ asset('plugins/daterangepicker/daterangepicker.js') }}"></script> --}}
 <!-- overlayScrollbars -->
-<script src="{{ asset('plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js') }}"></script>
+{{-- <script src="{{ asset('plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js') }}"></script> --}}
 <!-- AdminLTE App -->
 <script src="{{ asset('dist/js/adminlte.js') }}"></script>
 <!-- AdminLTE dashboard demo (This is only for demo purposes) -->
 <script src="{{ asset('dist/js/pages/dashboard.js') }}"></script>
 <!-- AdminLTE for demo purposes -->
-<script src="{{ asset('dist/js/demo.js') }}"></script> 
-
+{{-- <script src="{{ asset('dist/js/demo.js') }}"></script>  --}}
+<style>
+@media only screen and (max-width:767px){
+  body, * {
+    font-size: 98% !important;
+}
+}
+</style>
 </body>
 </html>

@@ -19,11 +19,11 @@ use Auth;
 class ShopifyController extends Controller
 {
         public function index(Request $request){
-    
-            $apiKey         = 'ae103121504821129123616e2e21516d';
+     
+            $apiKey         = '2cedddf03d8c528fb2aab37fdf9f069e'; 
             $shopDomain     = $request->input('shop'); 
             $scopes         = ['write_orders', 'write_products', 'write_themes', 'write_script_tags', 'write_content'];
-            $redirectionUri = 'https://ars.taajmart.com/authenticate'; 
+            $redirectionUri = 'https://fanarchpartners.com/authenticate'; 
             $nonce          = 'strong_nonce';
 
             $response = new AuthorizationRedirectResponse($apiKey, $shopDomain, $scopes, $redirectionUri, $nonce);
@@ -40,8 +40,8 @@ class ShopifyController extends Controller
             }
             else{
             // Set variables for our request
-            $api_key = "ae103121504821129123616e2e21516d";
-            $shared_secret = "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";
+            $api_key = "2cedddf03d8c528fb2aab37fdf9f069e";
+            $shared_secret = "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";
             $params = $_GET; // Retrieve all request parameters
             $hmac = $_GET['hmac']; // Retrieve HMAC request parameter
             $params = array_diff_key($params, array('hmac' => '')); // Remove hmac from params

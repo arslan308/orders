@@ -1,4 +1,4 @@
-@extends('layouts.app')
+@extends('layouts.admin')
 
 @section('content')
 <div class="container">
@@ -8,7 +8,7 @@
                 <div class="card-header">{{ __('Register') }}</div>
 
                 <div class="card-body">
-                    <form method="POST" action="{{ route('register') }}" aria-label="{{ __('Register') }}">
+                    <form method="POST" action="{{ route('register') }}" aria-label="{{ __('Register') }}" enctype="multipart/form-data">
                         @csrf
                         <div class="form-group row">
                             <label for="name" class="col-md-4 col-form-label text-md-right">Name</label>
@@ -55,6 +55,24 @@
                             <label for="type" class="col-md-4 col-form-label text-md-right">Collection Id</label>
                             <div class="col-md-6">
                             <input type="text" name="type" required class="form-control">
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label for="type" class="col-md-4 col-form-label text-md-right">Phone</label>
+                            <div class="col-md-6">
+                            <input type="text" name="phone" required class="form-control">
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label for="type" class="col-md-4 col-form-label text-md-right">Profit %</label>
+                            <div class="col-md-6">
+                            <input type="text" name="profit" required class="form-control">
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label for="type" class="col-md-4 col-form-label text-md-right">Image</label>
+                            <div class="col-md-6">
+                            <input type="file" name="image" required class="form-control">
                             </div>
                         </div>
                         <div class="form-group row mb-0">

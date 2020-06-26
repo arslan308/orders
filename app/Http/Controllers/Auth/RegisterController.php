@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\Auth;
 
 use App\User;
+use Illuminate\Http\Request;
+
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
@@ -37,7 +39,7 @@ class RegisterController extends Controller
      */
     public function __construct()
     {
-        $this->middleware('guest');
+        $this->middleware('auth');
     }
 
     /**
@@ -46,6 +48,18 @@ class RegisterController extends Controller
      * @param  array  $data
      * @return \Illuminate\Contracts\Validation\Validator
      */
+    public function register(Request $request)
+    {
+    // validate the form 
+
+    $this->validator($request->all())->validate();
+
+    // add the user
+    $this->create($request->all());
+
+    // redirect user
+    return redirect($this->redirectPath());
+    }
     protected function validator(array $data)
     {
         return Validator::make($data, [
@@ -62,13 +76,23 @@ class RegisterController extends Controller
      * @return \App\User
      */
     protected function create(array $data)
-    { 
+    {
+        if(request()->hasFile('image')){
+        $profileImage = request()->file('image');
+        $imageName = time().'.'.$profileImage->getClientOriginalExtension();
+        $profileImage->move("images", $imageName); 
+        }
+        else{
+            $imageName = '';
+        }
         return User::create([
             'name' => $data['name'],
             'email' => $data['email'],
             'password' => Hash::make($data['password']),
             'type' => $data['type'],
-
+            'phone' => $data['phone'],
+            'profit' => $data['profit'],
+            'image' => $imageName,
         ]);
     }
 }
