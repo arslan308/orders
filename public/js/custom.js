@@ -107,7 +107,7 @@ $(document).ready(function(){
     $('#profittable').DataTable({
       dom: 'Bfrtip',
         buttons: [
-            'copy', 'csv', 'excel', 'pdf', 'print'
+            'copy', 'csv', 'excel', 'pdf', 'print' 
         ],
       "pageLength": 50,
       "order": [[ 1, 'desc' ]],
