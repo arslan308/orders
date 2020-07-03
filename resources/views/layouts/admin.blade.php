@@ -97,13 +97,13 @@
       <div class="user-panel mt-3 pb-3 mb-3 d-flex">
         <div class="image">
           @if(Auth::user()->image !==null)
-          <img src="{{ asset('/public/images/'.Auth::user()->image) }}" style=" width: 50px; height: 36px; border-radius: 2px; " alt="User Image">
+          <img src="{{ asset('/public/images/'.Auth::user()->image) }}" style=" width: 50px;border-radius: 2px; " alt="User Image">
           @else
           <img src="{{ asset('dist/img/admin.png') }}" class="img-circle elevation-2" alt="User Image">
           @endif
         </div>
         <div class="info">
-          <a href="#" class="d-block">{{ Auth::user()->name }}</a>
+          <a href="/admin/home" class="d-block">{{ Auth::user()->name }}</a>
         </div>
       </div>
 
@@ -124,7 +124,7 @@
           @if(Auth::user()->is_admin == 1)
           <li class="nav-item">
             <a href="/admin/register" class="nav-link">
-              <i class="nav-icon fas fa-chart-pie"></i>
+              <i class="fa fa-registered" aria-hidden="true" style=" font-size: 19px; padding: 4px; "></i>
               <p>
                 Register
               </p>
@@ -132,7 +132,7 @@
           </li>
           <li class="nav-item">
             <a href="/admin/vendors" class="nav-link">  
-              <i class="nav-icon fas fa-chart-pie"></i> 
+              <i class="fa fa-user" aria-hidden="true" style=" font-size: 19px; padding: 4px; "></i>
               <p>
                 Clients
               </p>
@@ -140,13 +140,21 @@
           </li>
           <li class="nav-item">
             <a href="/admin/profit" class="nav-link">    
-              <i class="nav-icon fas fa-chart-pie"></i> 
+              <i class="fas fa-wallet" aria-hidden="true" style="padding: 4px; "></i>
               <p>
                 Profit
-              </p>
+              </p> 
             </a>
           </li>
           @endif
+          <li class="nav-item">
+            <a href="/admin/account" class="nav-link">    
+              <i class="fa fa-cog" aria-hidden="true" style="padding: 4px; "></i>
+              <p>
+                Account Settings
+              </p>
+            </a>
+          </li>
           {{-- <li class="nav-item">
             <a href="/chatify" class="nav-link">  
               <i class="nav-icon fas fa-chart-pie"></i> 
@@ -176,9 +184,9 @@
   <footer class="main-footer">
     <strong>Copyright &copy; 2014-2020 <a href="#">Fanarch</a>.</strong>
     All rights reserved.
-    <div class="float-right d-none d-sm-inline-block">
+    {{-- <div class="float-right d-none d-sm-inline-block">
       <b>Version</b> 1.0.0
-    </div>
+    </div> --}}
   </footer>
 
   <!-- Control Sidebar -->

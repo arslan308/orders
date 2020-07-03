@@ -40,12 +40,14 @@
                   </div>
               </form>
 
-              <table class="table table-striped table-bordered table-hover" cellspacing="0" width="100%">
+              <table class="table table-striped table-bordered table-hover vendorTable" cellspacing="0" width="100%">
                   <thead>
                     <tr>
                   <th class="th-sm">Name</th>
                   <th class="th-sm">Email</th>
-                  <th class="th-sm">Collection Id</th>
+                  <th class="th-sm">Phone</th>
+                  <th class="th-sm">Profit</th>
+
                   <th class="th-sm">Action</th>
                     </tr>
                   </thead>
@@ -53,21 +55,19 @@
                       @if($users->count() > 0)
                       @foreach($users as $user)
                       <tr>
-                      <td>{{$user->name}}</td>
-                      <td>{{$user->email}}</td>
-                      <td>{{$user->type}}</td>  
+                      <td class="name">{{$user->name}}</td>
+                      <td class="email">{{$user->email}}</td>
+                      <td class="type">{{$user->phone}}</td>  
+                      <td class="type">{{$user->profit}}</td>  
+
                       <td>
-                           <a href="vendors/{{$user->id}}"><i class="fas fa-edit"></i> Edit</a>
-                           <form method="POST" action="/admin/vendor/delete/{{$user->id}}" style=" display: inline-block; ">
-                            {{ csrf_field() }}
-                            {{ method_field('DELETE') }}
-                            {{-- <div class="form-group"> --}}
-                                <button type="submit" class="btn btn-primary"><i class="fas fa-trash-alt"></i>Delete</button> 
-                            {{-- </div> --}}
-                           </form>
-
+                           <button class="edit btn btn-primary"><i class="fas fa-edit"></i> Edit</button> 
+                           <button type="button" class="btn btn-danger delete"><i class="fas fa-trash-alt"></i>Delete</button> 
                       </td>
-
+                      <td class="phone" style="display: none;">{{$user->phone}}</td> 
+                      <td class="id" style="display: none;">{{$user->id}}</td>
+                      <td class="profit" style="display: none;">{{$user->profit}}</td> 
+                      <td class="image" style="display: none;">{{ asset('public/images') }}/{{  $user->image }}</td>
                         </tr>
                         @endforeach
                       @else
@@ -79,4 +79,76 @@
           </div>
       </div>
       </div>
+
+
+
+
+
+
+
+
+      {{-- <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
+        Launch demo modal
+      </button> --}}
+
+
+
+
+      @if($users->count() > 0)
+      <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="exampleModalLabel">Edit  Info</h5>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">
+              <form  method="post" action="/admin/vendor/update" enctype="multipart/form-data">
+                @csrf 
+                <input type="hidden" name="id" value="{{ $user->id }}"> 
+                <div class="form-group">
+                  <label>Name</label>
+                  <input type="text" name="name" class="form-control" value="{{ $user->name }}">
+                </div>
+                <div class="form-group">
+                  <label>Email</label>
+              <input type="text" name="email" class="form-control" value="{{ $user->email }}">
+                </div>
+                <div class="form-group">
+                  <label>Collection Id</label>
+                  <input type="text" name="type" class="form-control" value="{{ $user->type }}">
+                </div>
+                <div class="form-group">
+                  <label>Phone</label>
+                  <input type="text" name="phone" class="form-control" value="{{ $user->phone }}">
+                </div>
+                <div class="form-group">
+                  <label>Profit</label>
+                  <input type="text" name="profit" class="form-control" value="{{ $user->profit }}">
+                </div>
+                <div class="form-group">
+                  <label>Image</label>
+                  <input type="file" name="image" class="form-control" value="{{ $user->image }}">
+                </div>
+                @if($user->image)
+                <img class="dumyimg" src="{{ asset('public/images') }}/{{  $user->image }}" width="100px" />
+                @else
+                <img class="dumyimg" src="https://via.placeholder.com/150"  width="100px" />
+
+               @endif
+                <div class="form-group">
+                  <input type="submit"  class="btn btn-success" style="float: right;"> 
+                </div>
+              </form>
+            </div>
+            <div class="modal-footer">
+              {{-- <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button> --}}
+              {{-- <button type="button" class="btn btn-primary saveclient">Save changes</button> --}}
+            </div>
+          </div>
+        </div>
+      </div>
+      @endif
 @endsection

@@ -29,13 +29,16 @@ Route::group(['prefix'=>'admin','as'=>'admin.'], function(){
     Route::get('/vendors', 'ProductController@vendors')->name('vendors');    
     Route::get('/vendors/{id}', 'ProductController@vendoredit')->name('vendoredit');      
     Route::post('/vendor/update', 'ProductController@update')->name('update');  
-    Route::delete('/vendor/delete/{id}', 'ProductController@delete')->name('delete');      
+    Route::post('/vendor/delete/{id}', 'ProductController@delete')->name('delete');      
     Route::get('/profit', 'ProductController@profit')->name('profit');    
     Route::get('/getprofit', 'ProductController@getprofit')->name('getprofit');   
-    Route::get('/getprofit/get', 'ProductController@getprofitget')->name('getprofitget');    
+    Route::get('/getprofit/get/{range}', 'ProductController@getprofitget')->name('getprofitget');    
+    Route::get('/orders/get/{range}', 'ProductController@get')->name('getproducts');
 
-
-
-    Route::get('/orders/get', 'ProductController@get')->name('getproducts');
 });
 
+Route::group(['prefix'=>'admin','as'=>'admin.'], function(){
+    Route::get('/account', 'AccountController@account')->name('settings');
+    Route::post('/account/update2', 'AccountController@update')->name('update'); 
+
+});

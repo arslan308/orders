@@ -50,9 +50,9 @@
                     <input type="file" name="image" class="form-control" value="{{ $user->image }}">
                   </div>
                   @if($user->image)
-                  <img class="dumyimg" src="{{ asset('public/images') }}/{{  $user->image }}" height="100px" width="100px" />
+                  <img class="dumyimg" src="{{ asset('public/images') }}/{{  $user->image }}" width="100px" />
                   @else
-                  <img class="dumyimg" src="https://via.placeholder.com/150" height="100px" width="100px" />
+                  <img class="dumyimg" src="https://via.placeholder.com/150"  width="100px" />
 
                  @endif
                   <div class="form-group">

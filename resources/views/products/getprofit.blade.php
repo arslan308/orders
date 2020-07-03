@@ -23,13 +23,32 @@
   </div>
 
   <div class="container-fluid">
+    <div class="row">
+      <div class="col-md-8">
+      </div>
+      <div class="col-md-4">
+        <div>
+          @php
+            $yms = array();
+            $now = date('Y-m');
+            for($x = 12; $x >= 0; $x--) {
+                $ym = date('Y-m', strtotime($now . " -$x month"));
+                $yms[$ym] = '<option>'.$ym.'</option>';
+            }
+    
+            echo "<select class='form-control monthprofit'>";
+            print_r($yms);
+            echo "</select>";
+        @endphp
+    </div>
+      </div>
+    </div>
       <div class="row">
           <div class="col-md-12">
               <table class="table table-bordered" id="profittable" cellspacing="0" width="100%">
                   <thead>
                   <th class="th-sm">Client</th>
                   <th class="th-sm">Month</th>
-                  {{-- <th class="th-sm">Cost</th> --}}
                   <th class="th-sm">Profit</th>
                   </thead>
               </table>
