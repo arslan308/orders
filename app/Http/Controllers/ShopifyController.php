@@ -28,7 +28,7 @@ class ShopifyController extends Controller
 
             $response = new AuthorizationRedirectResponse($apiKey, $shopDomain, $scopes, $redirectionUri, $nonce);
             return redirect($response->getHeader('location')[0]);
-        }
+        } 
 
         public function redirect(Request $request){
             if (Shop::where('domain', '=', $_GET['shop'])->exists()) {
@@ -74,11 +74,11 @@ class ShopifyController extends Controller
             ]);
             $mainshop = Shop::create([
                 'user_id' => $newuser['id'],
-                'domain' => $shopDomain2['domain'],
+                'domain' => $shopDomain2['domain'], 
                 'access_token' => $accessToken,
             ]);
             $user = User::where('email', '=', $shopDomain2['email'])->first();
-            Auth::login($user);
+            Auth::login($user); 
             $redirect = 'admin/home';
             return redirect($redirect);
             } else {

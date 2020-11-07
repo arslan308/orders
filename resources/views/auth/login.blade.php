@@ -11,7 +11,7 @@
         <div class="col-md-8">
             <div class="card wrapper fadeInDown" id="formContent" style=" margin: 0px auto;">
                 <div class="card-header33" style="margin: 15px;">
-                    <img src="{{ asset('dist/img/ezgif.com-webp-to-jpg.jpg') }}" alt="AdminLTE Logo" class="brand-image elevation-3"
+                    <img src="{{ asset('dist/img/fan_arch_140x.webp') }}" alt="AdminLTE Logo" class="brand-image elevation-3"
                     style="opacity: .8;width:55px;"> 
 
                 </div>

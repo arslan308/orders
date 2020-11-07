@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="shortcut icon" href="{{ asset('dist/img/ezgif.com-webp-to-jpg.jpg') }}"> 
+    <link rel="shortcut icon" href="{{ asset('dist/img/fan_arch_140x.webp') }}">  
     <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
@@ -18,7 +18,7 @@
     <link href="https://fonts.googleapis.com/css?family=Nunito" rel="stylesheet" type="text/css">
 
     <!-- Styles -->
-    <link href="{{ asset('css/app.css') }}" rel="stylesheet">
+    <link href="{{ asset('css/app.css') }}" rel="stylesheet"> 
 </head>
 <body>
     <div id="app">
@@ -26,7 +26,7 @@
             <div class="container">
                 @guest
                 <a class="navbar-brand">
-                    <img src="{{ asset('dist/img/ezgif.com-webp-to-jpg.jpg') }}" alt="AdminLTE Logo" class="brand-image elevation-3"
+                    <img src="{{ asset('dist/img/fan_arch_140x.webp') }}" alt="AdminLTE Logo" class="brand-image elevation-3"
            style="opacity: .8;width:55px;">  Fanarch Partners 
                 </a>
                 @else

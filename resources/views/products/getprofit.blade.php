@@ -31,11 +31,12 @@
           @php
             $yms = array();
             $now = date('Y-m');
+            $yms[] = "<option>All</option>";
             for($x = 12; $x >= 0; $x--) {
                 $ym = date('Y-m', strtotime($now . " -$x month"));
                 $yms[$ym] = '<option>'.$ym.'</option>';
             }
-    
+            $yms = array_reverse($yms);
             echo "<select class='form-control monthprofit'>";
             print_r($yms);
             echo "</select>";

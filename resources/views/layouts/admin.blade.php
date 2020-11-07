@@ -3,20 +3,17 @@
 <head>
   <meta charset="utf-8">  
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <link rel="shortcut icon" href="{{ asset('dist/img/ezgif.com-webp-to-jpg.jpg') }}"> 
-  {{-- <title>Admin Dashboard</title> --}}
+  <link rel="shortcut icon" href="{{ asset('dist/img/fan_arch_140x.webp') }}"> 
   <!-- CSRF Token -->
 <meta name="csrf-token" content="{{ csrf_token() }}" id="_token">
 <title>Fan Arch Partners</title>    
 
 {{-- data-tables --}}
 <link  rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.21/css/dataTables.bootstrap4.min.css">
-{{-- <link  rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.21/css/jquery.dataTables.min.css"> --}}
+
 <link  rel="stylesheet" type="text/css" href="https://cdn.datatables.net/buttons/1.6.2/css/buttons.dataTables.min.css">
 
 <link  rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.1.3/css/bootstrap.css">
-{{-- <link  rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.12/css/select2.min.css"> --}}
- 
 
 <!-- Scripts -->
 <script src="{{ asset('js/app.js') }}" defer></script>
@@ -30,23 +27,12 @@
   <!-- Tell the browser to be responsive to screen width -->
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <!-- Font Awesome -->
-  <link rel="stylesheet" href="{{ asset('plugins/fontawesome-free/css/all.min.css') }}">
-  <!-- Ionicons -->
+ <!-- Ionicons -->
   <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
-  <!-- Tempusdominus Bbootstrap 4 -->
-  {{-- <link rel="stylesheet" href="{{ asset('plugins/tempusdominus-bootstrap-4/css/tempusdominus-bootstrap-4.min.css') }}"> --}}
-  <!-- iCheck -->
-  {{-- <link rel="stylesheet" href="{{ asset('plugins/icheck-bootstrap/icheck-bootstrap.min.css') }} "> --}}
-  <!-- JQVMap -->
-  {{-- <link rel="stylesheet" href=" {{ asset('plugins/jqvmap/jqvmap.min.css') }}"> --}}
-  <!-- Theme style -->
+
   <link rel="stylesheet" href=" {{ asset('dist/css/adminlte.min.css') }}">
-  <!-- overlayScrollbars -->
-  <link rel="stylesheet" href="{{ asset('plugins/overlayScrollbars/css/OverlayScrollbars.min.css') }}">
-  <!-- Daterange picker -->
-  <link rel="stylesheet" href="{{ asset('plugins/daterangepicker/daterangepicker.css') }}">
-  <!-- summernote -->
-  {{-- <link rel="stylesheet" href="{{ asset('plugins/summernote/summernote-bs4.css') }} "> --}}
+  <link rel="stylesheet" href=" {{ asset('redactor/redactor.css') }}">
+
   <!-- Google Font: Source Sans Pro -->
   <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700" rel="stylesheet">
   <link href="https://unpkg.com/izitoast/dist/css/iziToast.min.css" rel="stylesheet" type="text/css" />
@@ -86,7 +72,7 @@
   <aside class="main-sidebar sidebar-dark-primary elevation-4">
     <!-- Brand Logo -->
     <a href="/admin/home" class="brand-link"> 
-      <img src="{{ asset('dist/img/ezgif.com-webp-to-jpg.jpg') }}" alt="AdminLTE Logo" class="brand-image elevation-3"
+      <img src="{{ asset('dist/img/fan_arch_140x.webp') }}" alt="AdminLTE Logo" class="brand-image elevation-3"
            style="opacity: .8;border-radius:8px;"> 
       <span class="brand-text font-weight-light">Fanarch Partners</span>
     </a>
@@ -97,7 +83,7 @@
       <div class="user-panel mt-3 pb-3 mb-3 d-flex">
         <div class="image">
           @if(Auth::user()->image !==null)
-          <img src="{{ asset('/public/images/'.Auth::user()->image) }}" style=" width: 50px;border-radius: 2px; " alt="User Image">
+          <img src="{{ asset('/public/images/'.Auth::user()->image) }}" alt="User Image">
           @else
           <img src="{{ asset('dist/img/admin.png') }}" class="img-circle elevation-2" alt="User Image">
           @endif
@@ -118,6 +104,14 @@
               <i class="nav-icon fas fa-chart-pie"></i>
               <p>
                 Orders
+              </p>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a href="/admin/incentive" class="nav-link">  
+              <i class="nav-icon fas fa-chart-pie"></i>
+              <p>
+                Incentive Page
               </p>
             </a>
           </li>
@@ -144,6 +138,22 @@
               <p>
                 Profit
               </p> 
+            </a>
+          </li>
+          <li class="nav-item">
+            <a href="/admin/announce" class="nav-link">    
+              <i class="fas fa-bullhorn" aria-hidden="true" style="padding: 4px; "></i>
+              <p>
+                Announcements  
+              </p>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a href="/admin/email" class="nav-link">    
+              <i class="fas fa-envelope-square" aria-hidden="true" style="padding: 4px; "></i>
+              <p>
+                Email System  
+              </p>
             </a>
           </li>
           @endif
@@ -214,36 +224,41 @@
 <script src="https://cdn.datatables.net/buttons/1.6.2/js/buttons.print.min.js" defer="defer"></script>
 
 <!-- jQuery UI 1.11.4 -->
-<script src="{{ asset('plugins/jquery-ui/jquery-ui.min.js') }}"></script>
-{{-- <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.12/js/select2.min.js"  type="text/javascript"></script>
-<script src="{{ asset('js/tinymce/tinymce.min.js') }}" type="text/javascript"></script>
-<script src="https://unpkg.com/izitoast/dist/js/iziToast.min.js"></script> --}}
+<script src="{{ asset('plugins/jquery-ui/jquery-ui.min.js') }}"></script>  
+
+{{-- <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script> --}}
+
+<script src="{{ asset('redactor/redactor.min.js') }}"></script>   
+<script src="https://cdn.tiny.cloud/1/no-api-key/tinymce/5/tinymce.min.js" referrerpolicy="origin"></script>
+<script>
+      tinymce.init({
+        selector: '#content22'
+      });
+// $R('#content22', { plugins: ['alignment','definedlinks', 'fontcolor', 'fontfamily', 'fontsize'],
+//                     fontcolors: [
+//                         '#000', '#333', '#555', '#777', '#999', '#aaa',   
+//                         '#bbb', '#ccc', '#ddd', '#eee', '#f4f4f4'
+//                     ]
+//                 });
+
+
+</script>
 <script src="{{ asset('js/custom.js') }}"></script>
-
-
-
+@stack('script')
+<script src="https://kit.fontawesome.com/39b3121059.js" crossorigin="anonymous"></script> 
 
 <!-- Resolve conflict in jQuery UI tooltip with Bootstrap tooltip -->
 <script>
   $.widget.bridge('uibutton', $.ui.button)
 </script>
-<!-- Bootstrap 4 -->
-{{-- <script src="{{ asset('plugins/bootstrap/js/bootstrap.bundle.min.js') }}"></script> --}}
-<!-- Sparkline -->
-{{-- <script src="{{ asset('plugins/sparklines/sparkline.js') }}"></script> --}}
-<!-- daterangepicker -->
-{{-- <script src="{{ asset('plugins/moment/moment.min.js') }}"></script>
-<script src="{{ asset('plugins/daterangepicker/daterangepicker.js') }}"></script> --}}
-<!-- overlayScrollbars -->
-{{-- <script src="{{ asset('plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js') }}"></script> --}}
+
 <!-- AdminLTE App -->
-<script src="{{ asset('dist/js/adminlte.js') }}"></script>
+<script src="{{ asset('dist/js/adminlte.min.js') }}"></script>
 <!-- AdminLTE dashboard demo (This is only for demo purposes) -->
 <script src="{{ asset('dist/js/pages/dashboard.js') }}"></script>
-<!-- AdminLTE for demo purposes -->
-{{-- <script src="{{ asset('dist/js/demo.js') }}"></script>  --}}
+
 <style>
-@media only screen and (max-width:767px){
+@media only screen and (max-width:767px){ 
   body, * {
     font-size: 98% !important;
 }

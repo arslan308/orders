@@ -30,7 +30,7 @@ class RegisterController extends Controller
      *
      * @var string
      */
-    protected $redirectTo = 'admin/home';
+    protected $redirectTo = 'admin/vendors';
 
     /**
      * Create a new controller instance.
@@ -85,14 +85,16 @@ class RegisterController extends Controller
         else{
             $imageName = '';
         }
-        return User::create([
+         User::insert([
             'name' => $data['name'],
             'email' => $data['email'],
             'password' => Hash::make($data['password']),
             'type' => $data['type'],
             'phone' => $data['phone'],
             'profit' => $data['profit'],
+            'newinsta' => $data['instahandle'],    
             'image' => $imageName,
         ]);
+        return redirect('/admin/vendors');  
     }
 }

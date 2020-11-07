@@ -5,13 +5,18 @@
     <div class="container-fluid">
       <div class="row mb-2">
         <div class="col-sm-6">
-          <h1 class="m-0 text-dark">Clients</h1>
+          <h1 class="m-0 text-dark">Clients</h1> 
         </div>
         <div class="col-sm-6">
           <ol class="breadcrumb float-sm-right">
             <li class="breadcrumb-item"><a href="/admin/home">Home</a></li>
             <li class="breadcrumb-item active">Clients</li>
-          </ol>
+          </ol> 
+        </div>
+      </div>
+      <div class="row mb-2">
+        <div class="col-md-12 text-right">   
+           <a href="alogin" class="btn btn-primary">Auto login</a>  
         </div>
       </div>
       <div class="row mb-2">
@@ -31,7 +36,7 @@
           </div>
           @endif
           <div class="col-md-12">
-            <form  method="get">
+            <form  method="get" style=" float: right;">
                 <div class="input-group mb-3">
                     <input type="text" name="search" class="form-control" value="{{ Request::get('search') }}">
                     <div class="input-group-append">
@@ -45,7 +50,7 @@
                     <tr>
                   <th class="th-sm">Name</th>
                   <th class="th-sm">Email</th>
-                  <th class="th-sm">Phone</th>
+                  <th class="th-sm">Collection ID</th>
                   <th class="th-sm">Profit</th>
 
                   <th class="th-sm">Action</th>
@@ -57,17 +62,21 @@
                       <tr>
                       <td class="name">{{$user->name}}</td>
                       <td class="email">{{$user->email}}</td>
-                      <td class="type">{{$user->phone}}</td>  
-                      <td class="type">{{$user->profit}}</td>  
+                      <td class="type">{{$user->type}}</td>  
+                      <td class="profit">{{$user->profit}}</td>   
 
                       <td>
-                           <button class="edit btn btn-primary"><i class="fas fa-edit"></i> Edit</button> 
-                           <button type="button" class="btn btn-danger delete"><i class="fas fa-trash-alt"></i>Delete</button> 
+                           <button class="edit btn btn-primary btn-sm"><i class="fas fa-edit"></i> Edit</button> 
+                           <button type="button" class="btn btn-danger delete btn-sm"><i class="fas fa-trash-alt"></i> Delete</button>
+                           <button type="button" class="btn btn-danger autologin btn-sm"><i class="fas fa-eye"></i> Login</button>  
+
                       </td>
                       <td class="phone" style="display: none;">{{$user->phone}}</td> 
                       <td class="id" style="display: none;">{{$user->id}}</td>
-                      <td class="profit" style="display: none;">{{$user->profit}}</td> 
-                      <td class="image" style="display: none;">{{ asset('public/images') }}/{{  $user->image }}</td>
+                      {{-- <td class="profit" style="display: none;">{{$user->profit}}</td>      --}}
+                      <td class="instahandle" style="display: none;">{{  $user->newinsta }}</td>
+                      <td class="image" style="display: none;">{{ asset('public/images') }}/{{  $user->image }}</td> 
+
                         </tr>
                         @endforeach
                       @else
@@ -79,19 +88,6 @@
           </div>
       </div>
       </div>
-
-
-
-
-
-
-
-
-      {{-- <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
-        Launch demo modal
-      </button> --}}
-
-
 
 
       @if($users->count() > 0)
@@ -129,6 +125,10 @@
                   <input type="text" name="profit" class="form-control" value="{{ $user->profit }}">
                 </div>
                 <div class="form-group">
+                  <label>Instagram Handle</label>
+                  <input type="text" name="instahandle" class="form-control" value="{{ $user->newinsta }}">
+                </div>
+                <div class="form-group">
                   <label>Image</label>
                   <input type="file" name="image" class="form-control" value="{{ $user->image }}">
                 </div>
@@ -144,8 +144,6 @@
               </form>
             </div>
             <div class="modal-footer">
-              {{-- <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button> --}}
-              {{-- <button type="button" class="btn btn-primary saveclient">Save changes</button> --}}
             </div>
           </div>
         </div>
