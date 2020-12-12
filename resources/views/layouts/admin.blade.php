@@ -232,7 +232,7 @@
 <script src="https://cdn.tiny.cloud/1/no-api-key/tinymce/5/tinymce.min.js" referrerpolicy="origin"></script>
 <script>
       tinymce.init({
-        selector: '#content22'
+        selector: '#content22,#content44'
       });
 // $R('#content22', { plugins: ['alignment','definedlinks', 'fontcolor', 'fontfamily', 'fontsize'],
 //                     fontcolors: [

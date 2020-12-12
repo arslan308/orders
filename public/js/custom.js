@@ -78,7 +78,7 @@ $('#productstable').DataTable({
           var cost = "0";
           for(var i=0;i<data.length;i++){
             output = parseFloat(output) + parseFloat(data[i].price)*parseFloat(data[i].quantity)+parseFloat(row['difperitem']) * parseFloat(data[i].quantity) ;
-            cost = parseFloat(cost) + parseFloat(data[i].retail_price) * parseFloat(data[i].quantity) + parseFloat(row['costdiffper']) * parseFloat(data[i].quantity) -  parseFloat(row['cstmdiscount']) * parseFloat(data[i].quantity);
+            cost = parseFloat(cost) + parseFloat(data[i].retail_price) * parseFloat(data[i].quantity) + parseFloat(row['costdiffper']) * parseFloat(data[i].quantity);
           } 
           output = parseFloat(output).toFixed(2);   //// getting cost of all items
           var poutput = parseFloat(cost) - parseFloat(output);    /// jason farmoula

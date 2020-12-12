@@ -4,9 +4,13 @@
   <!-- Main content -->
   <section class="content">
     <div class="container-fluid">
-        <div class="maintxt"></div>
+        <label>For Greater Than 20</label>
 <textarea id="content22" rows="10" name="mailbody" class="form-control" style="margin-bottom: 20px"></textarea>
 <br>
+<label>For Less Than 20</label>
+<textarea id="content44" rows="10" name="mailbody2" class="form-control" style="margin-bottom: 20px"></textarea> 
+<br>
+
 <div class="row">
     <div class="checkbox">
         <label><input type="checkbox" name="democheck">  Send Test Email</label>
@@ -55,7 +59,9 @@ $('[name="democheck"]').change(function(){
         var _month = $('.monthprofit').val(); 
         var _text = $('[name="mailbody"]').val();
         var testemail = $('[name="demoemail"]').val();
-         var _text =tinyMCE.activeEditor.getContent();
+        //  var _text = tinyMCE.activeEditor.getContent();
+        var _text = tinymce.get("content22").getContent();
+        var _text2 = tinymce.get("content44").getContent();
          var _auto = '';
          if($('[name="democheck"]').is(':checked')){
             _auto = 1;
@@ -78,6 +84,7 @@ $('[name="democheck"]').change(function(){
         data:{
             "month": _month,
             'message':_text,
+            'message2':_text2,
             'auto':_auto,
             'testemail':testemail 
             },

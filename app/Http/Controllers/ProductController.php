@@ -47,13 +47,14 @@ public function index(){
     $ofset = 0;
     $totalorders = [];
     for($i=1; $i<=$OrdersDevide; $i++){  
-    $totalorders2 = $pf->get('orders',['limit' => '100','offset' => $ofset]);
+    $totalorders2 = $pf->get('orders',['limit' => '100','offset' => $ofset]);    ///// getting all new orders from printful that were not in our db
     foreach($totalorders2 as $key => $order){
         $totalorders[] = $totalorders2[$key];
     }
     $ofset += 100;
   }
-    $products = $totalorders;
+    $products = $totalorders;          
+    // dd($products[0]); 
     foreach($products as $product){
         $totalItems = 0;
         if(count($product['items']) > 0){
@@ -67,18 +68,18 @@ public function index(){
             $product['retail_costs']['total'] = 0;
         }
         if ($order === null && $product['external_id']  !=null) {
-            $vtotl = $product['retail_costs']['total'] * 0.974 - 0.30 ;
+            $vtotl = $product['retail_costs']['total'] * 0.974 - 0.30 ;  
             $vtotl = round($vtotl, 2); 
-            if($product['retail_costs']['discount'] > 0){
-                $discount = $product['retail_costs']['discount']/2;
-                $dis_taken =  $discount;   
-                $newsubtotal =  $product['retail_costs']['subtotal'] - $product['retail_costs']['discount'];
-            }
-            else{
-                $discount = null;
-                $dis_taken = null;
-                $newsubtotal =  $product['retail_costs']['subtotal'];
-            }
+            // if($product['retail_costs']['discount'] > 0){
+            //     $discount = $product['retail_costs']['discount']/2; 
+            //     $dis_taken =  $discount;    
+            //     $newsubtotal =  $product['retail_costs']['subtotal'] - $product['retail_costs']['discount'];   
+            // }
+            // else{
+            //     $discount = null; 
+            //     $dis_taken = null;
+            //     $newsubtotal =  $product['retail_costs']['subtotal'];
+            // }
         Order::insert([ 
             'order_id' => $product['external_id'],
             'subtotal' =>   $vtotl,
@@ -86,19 +87,18 @@ public function index(){
             'items' => json_encode($product['items']),
             'cost' => $product['costs']['total'],
             'odate' => date("Y-m-d", $product['created']),  
-            'quantity' => $totalItems, 
-            'peritemcost' => $product['costs']['total'] - $product['costs']['subtotal'], 
-            'peritemretail' =>   $vtotl - $newsubtotal,
-            'discount' =>  $discount,
-            'dis_taken' =>  $dis_taken
-
+            'quantity' => $totalItems,   
+            'peritemcost' => $product['costs']['total'] - $product['costs']['subtotal'] - $product['costs']['discount']/2, 
+            'peritemretail' =>   $vtotl - $product['retail_costs']['subtotal'], 
+            'discount' =>  $product['costs']['discount'],
+            'dis_taken' =>  $product['costs']['discount']/2    
 
         ]);
         }
     }
     }
 
-    return view('products.view');
+    return view('products.view'); 
 }
 public function getprofitget(Request $request, $range){
     if ($range == "All"){
@@ -153,13 +153,12 @@ public function get(Request $request, $range){
         $check = 0;
         if($user->is_admin == 0){
         foreach($product['items'] as $key => $item){
-            $match = explode(' "',$product['items'][$key]['name']);
+            $match = explode(' "',$product['items'][$key]['name']); 
             $match = explode(' “',$match[0]);  
             // if(strpos($item['name'], $collproducts['title']) !== FALSE){
             // echo $match[0].' - '.$collproducts['title'].'<br>';   
             // if(strpos($product['items'][$key]['name'], $collproducts['title']) !== FALSE){ 
             if(strtolower($match[0]) == strtolower($collproducts['title']) || strpos(strtolower($collproducts['title']), strtolower($match[0])) !== FALSE){    
-                // echo "Aaaa";
                 $check++;
                 }
                 else{
@@ -187,17 +186,18 @@ public function get(Request $request, $range){
         $gain = $gain / $product['quantity'];  
         $products[$key2]['difperitem'] =$gain;   
 
-        if($product['discount'] > 0){
-        $cstmdiscount =  round($product['discount'], 2);
-        $cstmdiscount = $cstmdiscount / $product['quantity'];  
-        $products[$key2]['cstmdiscount'] = $cstmdiscount;   
-       }
-       else{
-        $products[$key2]['cstmdiscount'] = "0"; 
-      }
+    //     if($product['discount'] > 0){
+    //     // $discount = $product['discount']/2; 
+    //     $cstmdiscount =  round($product['discount'], 2);
+    //     $cstmdiscount = $cstmdiscount / $product['quantity'];  
+    //     $products[$key2]['cstmdiscount'] = $cstmdiscount;   
+    //    }
+    //    else{
+    //     $products[$key2]['cstmdiscount'] = "0"; 
+    //   }
     }
 }
-    return Datatables::of($products)
+    return Datatables::of($products) 
     ->rawColumns(['line_items','created_at']) 
     ->make(true); 
 }
@@ -223,13 +223,13 @@ public function profit(Request $request){
         $diff = $diff/$products[$key2]['quantity'];
         $PerItemAdd = round($products[$key2]['peritemretail'], 2);
         $PerItemAdd = $PerItemAdd/$products[$key2]['quantity'];
-        if($products[$key2]['discount'] > 0 ){ 
-            $discount = $products[$key2]['discount'];
-            $discount = $discount / count($product['items']);
-        }
-        else{
-            $discount = 0;
-        }
+        // if($products[$key2]['discount'] > 0 ){ 
+        //     $discount = $products[$key2]['discount'];
+        //     $discount = $discount / count($product['items']);
+        // }
+        // else{
+        //     $discount = 0; 
+        // }
         $totalItems = count($product['items']);
         foreach($products[$key2]['items'] as $key => $item){
             if($key == $totalItems-1 ){
@@ -237,7 +237,6 @@ public function profit(Request $request){
             }
                 // $username = explode(' ', $item['name'] , 3);
                 // $username = $username[0].' '.$username[1];
-
                 $username = explode(' "',$item['name']);
                 $username = explode(' “',$username[0]);    
 
@@ -248,7 +247,7 @@ public function profit(Request $request){
                 $orderdate = explode('-',$products[$key2]['odate']);
                 $PreCliData = Profit::where('client_id' ,'=', $users[0]['name'])->whereYear('month' ,'=', $orderdate[0])->whereMonth('month' ,'=', $orderdate[1])->first();
                 $maincost = $products[$key2]['items'][$key]['price']*$products[$key2]['items'][$key]['quantity']+$products[$key2]['items'][$key]['quantity']*$diff;
-                $retail_price =$products[$key2]['items'][$key]['retail_price']*$products[$key2]['items'][$key]['quantity']+$products[$key2]['items'][$key]['quantity']*$PerItemAdd - $discount;
+                $retail_price =$products[$key2]['items'][$key]['retail_price']*$products[$key2]['items'][$key]['quantity']+$products[$key2]['items'][$key]['quantity']*$PerItemAdd ;
                 $netprofit = $retail_price - $maincost;
                 $retail_price = round($retail_price, 2);
                 $maincost = round($maincost, 2);
@@ -279,7 +278,7 @@ public function profit(Request $request){
                     DB::table('profits')->insert($values); 
               }  
              else{
-                $match2 = [
+                $match2 = [ 
                     'items' => $PreCliData['items'].' , '.$_items, 
                     'shop_price' => round($PreCliData['shop_price']+$retail_price, 2),
                     'cost' => round($PreCliData['cost']+$maincost, 2),

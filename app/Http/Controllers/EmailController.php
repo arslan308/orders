@@ -41,6 +41,7 @@ class EmailController extends Controller
             'version'       => '2020-04'
         ]);
         $countmail = 0;
+        $datasent = '';
         foreach($allusers as $key => $user){
  
             $totalwin = 0;
@@ -74,26 +75,30 @@ class EmailController extends Controller
             $gain = $gain / $product['quantity'];  
             $products[$key2]['difperitem'] =$gain;   
     
-            if($product['discount'] > 0){
-            $cstmdiscount =  round($product['discount'], 2);
-            $cstmdiscount = $cstmdiscount / $product['quantity'];  
-            $products[$key2]['cstmdiscount'] = $cstmdiscount;   
-           }
-           else{
-            $products[$key2]['cstmdiscount'] = "0"; 
-          }
+        //     if($product['discount'] > 0){
+        //     $cstmdiscount =  round($product['discount'], 2);
+        //     $cstmdiscount = $cstmdiscount / $product['quantity'];  
+        //     $products[$key2]['cstmdiscount'] = $cstmdiscount;   
+        //    }  
+        //    else{
+        //     $products[$key2]['cstmdiscount'] = "0";  
+        //   }
           $output = "0";
           $cost = "0";
             $products[$key2]['profitper'] = $user->profit;    //// current user profit percentage
             $check = 0;
             $allitems = '';
             foreach($product['items'] as $key => $item){
-                if(strpos($product['items'][$key]['name'], $collproducts['title']) !== FALSE){
+                $match = explode(' "',$product['items'][$key]['name']); 
+                $match = explode(' “',$match[0]);   
+                if(strtolower($match[0]) == strtolower($collproducts['title']) || strpos(strtolower($collproducts['title']), strtolower($match[0])) !== FALSE){    
+
+                // if(strpos(strtolower($product['items'][$key]['name']), strtolower($collproducts['title'])) !== FALSE){  
                     $allitems .= $product['items'][$key]['name'];
                     $check++; 
 
                     $output =  $output + $product['items'][$key]['price']*$product['items'][$key]['quantity']+ $products[$key2]['difperitem'] * $product['items'][$key]['quantity'] ;
-                    $cost =  $cost + $product['items'][$key]['retail_price'] * $product['items'][$key]['quantity'] +  $products[$key2]['costdiffper'] * $product['items'][$key]['quantity'] -  $products[$key2]['cstmdiscount'] * $product['items'][$key]['quantity'];
+                    $cost =  $cost + $product['items'][$key]['retail_price'] * $product['items'][$key]['quantity'] +  $products[$key2]['costdiffper'] * $product['items'][$key]['quantity'];
                 
                     }
                     else{ 
@@ -120,12 +125,21 @@ class EmailController extends Controller
           $records .= "<tr><td>".$product['odate']."</td><td>".$product['order_id']."</td><td>".$allitems."</td><td>".$check."</td><td>".$itemprofit."</td></tr>";
 
         }
-        
-       $records .= "</tbody></table></div></div></div></div></div></div><div style='margin-top:40px;font-wight:400;'><div class='cstmtxt' style='float:left;'>Total ".$month_name." Winnings</div><div style='float:right;'>$".$totalwin."</div></div>";
+        $records .= "</tbody></table></div></div></div></div></div></div>";
+        $records .= "<div style='margin-top:40px;font-wight:400;display:block;width:100%;'><div class='cstmtxt' style='float:left;'>Total November Winnings</div><div style='float:right;'>$".$totalwin."</div></div>";
+        if($user->carried > 0){
+          $totalwin2 = $totalwin + $user->carried; 
+          $totalwin3 =  $totalwin2 +  $totalwin ;  
+          $records .= "<br><div class='row' style='margin-top:40px;font-wight:400;'><div class='cstmtxt2 col-xs-6' style='float:left;'>Last Month Winnings</div><div class='col-xs-6' style='float:right;'>$".$totalwin2."</div></div>";
+          $records .= "<br><div class='row' style='margin-top:40px;font-wight:400;'><div class='cstmtxt3 col-xs-6' style='float:left;'>Total Winnings</div><div class='col-xs-6' style='float:right;'>$".$totalwin3."</div></div>";
+          
+        }
   
     }
-    if($totalwin > 0){
+    if($totalwin > 0){  
+
         $countmail++;
+        $datasent .= $user->email.' ';
         $pdf = PDF::loadHTML($records);
         $path = public_path().'/emailpdf/'.$user->type.$today.'.pdf';
 
@@ -140,16 +154,31 @@ class EmailController extends Controller
         $data["subject"] = 'Invoice';
         $utype = $user->type;  
         $txtmsg =  $request->message;  
-        Mail::send('email.email', array('msg' => $txtmsg), function ($message)use($data,$utype,$today) {
-            $message->to($data["email"], $data["client_name"])
-            ->subject($data["subject"])
-            ->attach(public_path('emailpdf/'.$utype.$today.'.pdf'), [ 
-                'as' => 'invoice.pdf',
-                'mime' => 'application/pdf',
-           ]);
-        });
+        $txtmsg2 =  $request->message2;   
+        $finalamount = $totalwin+$user->carried;
+        if($finalamount <= 20 ){ 
+
+            Mail::send('email.email2', array('msg' => $txtmsg2), function ($message)use($data) {
+                $message->to($data["email"], $data["client_name"])
+                ->subject($data["subject"]);
+            });
+
+            $allusers =  user::where('id','=',$user->id)->update(['carried' => $finalamount]);
+        }
+        else{ 
+            Mail::send('email.email', array('msg' => $txtmsg), function ($message)use($data,$utype,$today) {
+                $message->to($data["email"], $data["client_name"])
+                ->subject($data["subject"])
+                ->attach(public_path('emailpdf/'.$utype.$today.'.pdf'), [ 
+                    'as' => 'invoice.pdf',
+                    'mime' => 'application/pdf',
+               ]);
+            });
+            $allusers =  user::where('id','=',$user->id)->update(['carried' => '0']);  
+
+        }
     }  
     }
-    return $countmail; 
+    return $countmail;   
 }
 }

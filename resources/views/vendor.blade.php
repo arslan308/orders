@@ -52,7 +52,7 @@
                   <th class="th-sm">Email</th>
                   <th class="th-sm">Collection ID</th>
                   <th class="th-sm">Profit</th>
-
+                  <th class="th-sm">Running Balance</th>
                   <th class="th-sm">Action</th>
                     </tr>
                   </thead>
@@ -63,8 +63,8 @@
                       <td class="name">{{$user->name}}</td>
                       <td class="email">{{$user->email}}</td>
                       <td class="type">{{$user->type}}</td>  
-                      <td class="profit">{{$user->profit}}</td>   
-
+                      <td class="profit">{{$user->profit}}</td>    
+                      <td class="profit">${{$user->carried}}</td>   
                       <td>
                            <button class="edit btn btn-primary btn-sm"><i class="fas fa-edit"></i> Edit</button> 
                            <button type="button" class="btn btn-danger delete btn-sm"><i class="fas fa-trash-alt"></i> Delete</button>
