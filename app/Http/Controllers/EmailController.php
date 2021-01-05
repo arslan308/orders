@@ -19,6 +19,12 @@ class EmailController extends Controller
         $this->middleware('auth');
     }
     public function index(){
+
+        // Mail::send('email.email2', array('msg' => "abbb"), function ($message){
+        //     $message->to("arslansaleem308@gmail.com", "Arslan") 
+        //     ->subject("rrrrrrrrrrrrr"); 
+        // });   
+
         return view('email.index'); 
     }
     public function getdata(Request $request){ 
@@ -41,9 +47,8 @@ class EmailController extends Controller
             'version'       => '2020-04'
         ]);
         $countmail = 0;
-        $datasent = '';
         foreach($allusers as $key => $user){
- 
+
             $totalwin = 0;
             $today  = date('Y-m-d');
             $month_num = date('m');
@@ -74,15 +79,7 @@ class EmailController extends Controller
             $gain =  round($product['peritemcost'], 2);
             $gain = $gain / $product['quantity'];  
             $products[$key2]['difperitem'] =$gain;   
-    
-        //     if($product['discount'] > 0){
-        //     $cstmdiscount =  round($product['discount'], 2);
-        //     $cstmdiscount = $cstmdiscount / $product['quantity'];  
-        //     $products[$key2]['cstmdiscount'] = $cstmdiscount;   
-        //    }  
-        //    else{
-        //     $products[$key2]['cstmdiscount'] = "0";  
-        //   }
+
           $output = "0";
           $cost = "0";
             $products[$key2]['profitper'] = $user->profit;    //// current user profit percentage
@@ -139,7 +136,6 @@ class EmailController extends Controller
     if($totalwin > 0){  
 
         $countmail++;
-        $datasent .= $user->email.' ';
         $pdf = PDF::loadHTML($records);
         $path = public_path().'/emailpdf/'.$user->type.$today.'.pdf';
 
@@ -160,12 +156,13 @@ class EmailController extends Controller
 
             Mail::send('email.email2', array('msg' => $txtmsg2), function ($message)use($data) {
                 $message->to($data["email"], $data["client_name"])
-                ->subject($data["subject"]);
-            });
-
-            $allusers =  user::where('id','=',$user->id)->update(['carried' => $finalamount]);
+                ->subject($data["subject"]); 
+            }); 
+            if($request->auto == 0){   
+             $allusers =  user::where('id','=',$user->id)->update(['carried' => $finalamount]);
+            }
         }
-        else{ 
+        else{   
             Mail::send('email.email', array('msg' => $txtmsg), function ($message)use($data,$utype,$today) {
                 $message->to($data["email"], $data["client_name"])
                 ->subject($data["subject"])
@@ -174,10 +171,13 @@ class EmailController extends Controller
                     'mime' => 'application/pdf',
                ]);
             });
-            $allusers =  user::where('id','=',$user->id)->update(['carried' => '0']);  
-
+            if($request->auto == 0){  
+              $allusers =  user::where('id','=',$user->id)->update(['carried' => '0']); 
+            }  
         }
     }  
+    // return '1';
+    // exit;  
     }
     return $countmail;   
 }
