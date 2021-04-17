@@ -216,7 +216,7 @@ public function profit(Request $request){
         'version'       => '2020-04'
     ]);
     $products = Order::where('updated_at','=', NULL)->get()->toArray();   /// getting all order which are not added into profit table
-    foreach($products as $key2 => $product){
+    foreach($products as $key2 => $product){   
 
         if($products[$key2]['quantity'] > 0 ){ 
         $diff = round($products[$key2]['peritemcost'], 2);
@@ -299,11 +299,11 @@ public function register(){
 
 public function vendors(){    
     if(isset($_GET['search'])){
-        $search = $_GET['search'];
-        $users = User::where('name', 'LIKE', "%$search%")->paginate(50);
+        $search = $_GET['search']; 
+        $users = User::where('name', 'LIKE', "%$search%")->orWhere('type', 'LIKE', "%$search%")->paginate(50); 
     } 
     else{
-    $users = User::where('is_admin','=','0')->orderBy('name', 'asc')->paginate(50);
+    $users = User::where('is_admin','=','0')->orderBy('name', 'asc')->paginate(50); 
     }
     return view('vendor',['users' => $users]);
 }

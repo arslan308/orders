@@ -256,7 +256,16 @@
 <script src="{{ asset('dist/js/adminlte.min.js') }}"></script>
 <!-- AdminLTE dashboard demo (This is only for demo purposes) -->
 <script src="{{ asset('dist/js/pages/dashboard.js') }}"></script>
-
+<script>
+      var onloadCallback = function() {
+        grecaptcha.render('html_element', {
+          'sitekey' : '{{ config('services.recaptcha.sitekey') }}'   
+        });
+      };
+</script>
+<script src="https://www.google.com/recaptcha/api.js?onload=onloadCallback&render=explicit"
+async defer>
+</script> 
 <style>
 @media only screen and (max-width:767px){ 
   body, * {

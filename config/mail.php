@@ -56,7 +56,7 @@ return [
     */
 
     'from' => [
-        'address' => env('MAIL_FROM_ADDRESS', 'jason@fanarch.com'),
+        'address' => env('MAIL_FROM_ADDRESS', 'mail@fanarchpartners.com'),
         'name' => env('MAIL_FROM_NAME', 'Fanarch'),
     ],
 
@@ -84,9 +84,9 @@ return [
     |
     */
 
-    'username' => env('MAIL_USERNAME','jason@fanarch.com'),
+    'username' => env('MAIL_USERNAME','mail@fanarchpartners.com'),
 
-    'password' => env('MAIL_PASSWORD','Rockboy@91'), 
+    'password' => env('MAIL_PASSWORD','Rockboy91@'), 
 
     /*
     |--------------------------------------------------------------------------

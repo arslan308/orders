@@ -19,12 +19,6 @@ class EmailController extends Controller
         $this->middleware('auth');
     }
     public function index(){
-
-        // Mail::send('email.email2', array('msg' => "abbb"), function ($message){
-        //     $message->to("arslansaleem308@gmail.com", "Arslan") 
-        //     ->subject("rrrrrrrrrrrrr"); 
-        // });   
-
         return view('email.index'); 
     }
     public function getdata(Request $request){ 
@@ -47,6 +41,8 @@ class EmailController extends Controller
             'version'       => '2020-04'
         ]);
         $countmail = 0;
+        $countmailover = 0;
+        $countmailunder = 0;
         foreach($allusers as $key => $user){
 
             $totalwin = 0;
@@ -123,10 +119,10 @@ class EmailController extends Controller
 
         }
         $records .= "</tbody></table></div></div></div></div></div></div>";
-        $records .= "<div style='margin-top:40px;font-wight:400;display:block;width:100%;'><div class='cstmtxt' style='float:left;'>Total November Winnings</div><div style='float:right;'>$".$totalwin."</div></div>";
+        $records .= "<div style='margin-top:40px;font-wight:400;display:block;width:100%;'><div class='cstmtxt' style='float:left;'>Total January Winnings</div><div style='float:right;'>$".$totalwin."</div></div>";
         if($user->carried > 0){
-          $totalwin2 = $totalwin + $user->carried; 
-          $totalwin3 =  $totalwin2 +  $totalwin ;  
+          $totalwin2 =  $user->carried;  
+          $totalwin3 =  $totalwin2 +  $totalwin ;   
           $records .= "<br><div class='row' style='margin-top:40px;font-wight:400;'><div class='cstmtxt2 col-xs-6' style='float:left;'>Last Month Winnings</div><div class='col-xs-6' style='float:right;'>$".$totalwin2."</div></div>";
           $records .= "<br><div class='row' style='margin-top:40px;font-wight:400;'><div class='cstmtxt3 col-xs-6' style='float:left;'>Total Winnings</div><div class='col-xs-6' style='float:right;'>$".$totalwin3."</div></div>";
           
@@ -153,7 +149,7 @@ class EmailController extends Controller
         $txtmsg2 =  $request->message2;   
         $finalamount = $totalwin+$user->carried;
         if($finalamount <= 20 ){ 
-
+            $countmailunder++;
             Mail::send('email.email2', array('msg' => $txtmsg2), function ($message)use($data) {
                 $message->to($data["email"], $data["client_name"])
                 ->subject($data["subject"]); 
@@ -163,6 +159,7 @@ class EmailController extends Controller
             }
         }
         else{   
+            $countmailover++;
             Mail::send('email.email', array('msg' => $txtmsg), function ($message)use($data,$utype,$today) {
                 $message->to($data["email"], $data["client_name"])
                 ->subject($data["subject"])
@@ -177,8 +174,8 @@ class EmailController extends Controller
         }
     }  
     // return '1';
-    // exit;  
+    // exit;    
     }
-    return $countmail;   
+    return $countmailunder.'-'.$countmailover; 
 }
 }
